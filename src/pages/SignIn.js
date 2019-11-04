@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
 export default class SignIn extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       isSignIn: false,
       helperMessage: '',
@@ -27,7 +27,6 @@ export default class SignIn extends Component {
         return res.json();
       })
       .then(res => {
-        console.log(res);
         if (res === 'success') {
           this.setState({
             isSignIn: true,
@@ -37,7 +36,8 @@ export default class SignIn extends Component {
             helperMessage: '로그인 정보를 확인해주세요',
           });
         }
-      });
+      })
+      .catch(err => console.error(err));
   };
 
   render() {
