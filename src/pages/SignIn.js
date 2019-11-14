@@ -22,10 +22,9 @@ export default class SignIn extends Component {
       },
       method: 'POST',
       body: JSON.stringify(userInfo),
+      credentials: 'include',
     })
-      .then(res => {
-        return res.json();
-      })
+      .then(res => res.json())
       .then(res => {
         if (res === 'success') {
           this.setState({
