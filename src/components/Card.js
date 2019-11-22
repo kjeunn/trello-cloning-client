@@ -125,6 +125,25 @@ export default class Card extends Component {
     this.props.handleUpdateBoard();
   };
 
+  handleDeleteCard = async () => {
+    const cardId = {
+      cardId: this.props.cardData.id,
+    };
+    await fetch('http://localhost:3002/card', {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+      body: JSON.stringify(cardId),
+      credentials: 'include',
+    })
+      .then(res => res.json())
+      .then(res => res)
+      .catch(err => console.error(err));
+    this.props.handleUpdateBoard();
+  };
+
   toggle = () => {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -157,6 +176,7 @@ export default class Card extends Component {
     }
     return (
       <div>
+        <Button onClick={this.handleDeleteCard}>X</Button>
         <Button onClick={this.toggle}>{this.props.cardData.title}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>
