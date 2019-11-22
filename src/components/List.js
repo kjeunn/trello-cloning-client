@@ -1,22 +1,8 @@
 import React, { Component } from 'react';
+import { Input } from 'reactstrap';
 import Card from './Card';
 
 export default class List extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      listTitle: '',
-    };
-  }
-
-  componentDidMount = async () => {
-    if (this.props.listData) {
-      this.setState({
-        listTitle: this.props.listData.title,
-      });
-    }
-  };
-
   handleAddListClicked = async e => {
     if (e.charCode === 13 || e.target.value === 'Add List') {
       const elInput = document.getElementsByClassName('list')[0];
@@ -81,21 +67,22 @@ export default class List extends Component {
         .then(res => res.json())
         .then(res => res)
         .catch(err => console.error(err));
-      this.setState({
-        listTitle: updatedList.listTitle,
-      });
+      // this.setState({
+      //   listTitle: updatedList.listTitle,
+      // });
     }
 
     const elInput = e.target;
     const elDiv = document.createElement('div');
     elDiv.innerText =
-      elInput.value === '' ? this.state.listTitle : elInput.value;
+      elInput.value === '' ? this.props.listData.title : elInput.value;
     elDiv.className = 'list-title';
     elDiv.onclick = event => {
       this.handleListTitleClicked(event);
     };
     const parentDiv = elInput.parentNode;
     parentDiv.replaceChild(elDiv, elInput);
+    this.props.handleUpdateBoard();
   };
 
   handleDeleteClicked = async () => {
@@ -137,11 +124,10 @@ export default class List extends Component {
     }
     return (
       <div>
-        <input type="button" value="X" onClick={this.handleDeleteClicked} />
+        <Input type="button" value="X" onClick={this.handleDeleteClicked} />
         <div
           className="list-title"
           onClick={e => this.handleListTitleClicked(e)}
-          onKeyPress={e => this.handleListTitleChanged(e)}
           role="button"
           tabIndex="0"
         >
@@ -157,6 +143,7 @@ export default class List extends Component {
         ))}
         <Card
           cardData={undefined}
+          cardsLength={this.props.listData.cardLists.length}
           listId={this.props.listData.id}
           handleUpdateBoard={this.props.handleUpdateBoard}
         />
