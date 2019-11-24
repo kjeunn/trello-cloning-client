@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import LogOut from '../components/LogOut';
 
 export default class BoardList extends Component {
   constructor(props) {
@@ -54,6 +55,7 @@ export default class BoardList extends Component {
   render() {
     return (
       <div>
+        <LogOut />
         {this.state.boardList.map(board => {
           return (
             <span key={board.id}>
