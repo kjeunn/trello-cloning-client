@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Home from '../components/BoardHome';
-import LogOut from '../components/LogOut';
+import Nav from '../components/Nav';
 import List from '../components/List';
 
 export default class Board extends Component {
@@ -113,8 +113,8 @@ export default class Board extends Component {
   render() {
     return (
       <div>
+        <Nav />
         <Home />
-        <LogOut />
         <input
           type="button"
           value="Delete all"
