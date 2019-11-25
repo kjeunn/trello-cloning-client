@@ -9,7 +9,7 @@ import {
   ModalFooter,
 } from 'reactstrap';
 import jwtDecode from 'jwt-decode';
-import LogOut from '../components/LogOut';
+import Nav from '../components/Nav';
 
 export default class Setting extends Component {
   constructor() {
@@ -152,7 +152,7 @@ export default class Setting extends Component {
     }
     return (
       <div>
-        <LogOut />
+        <Nav />
         <div>{this.state.email}</div>
         <div>{this.state.name}</div>
         {/* <div>이름 변경</div>
