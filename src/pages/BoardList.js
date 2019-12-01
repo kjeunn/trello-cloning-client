@@ -69,11 +69,12 @@ export default class BoardList extends Component {
                 </div>
                 {this.state.boardList.map(board => {
                   return (
-                    <span className="container" style={{ width: '700px' }}>
-                      <span
-                        className="d-inline-block p-5 bg-success border-success rounded-lg"
-                        key={board.id}
-                      >
+                    <span
+                      className="container"
+                      style={{ width: '700px' }}
+                      key={board.id}
+                    >
+                      <span className="d-inline-block p-5 bg-success border-success rounded-lg">
                         <Link
                           className="text-white"
                           to={{
