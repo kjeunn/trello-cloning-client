@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { SERVER_ADDRESS } from '../config/.env';
 
 export default class Card extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ export default class Card extends Component {
             : e.target.value,
         cardDescript: '',
       };
-      await fetch('http://localhost:3002/card', {
+      await fetch(`${SERVER_ADDRESS}/card`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ export default class Card extends Component {
     }
 
     if (isUpdated) {
-      await fetch('http://localhost:3002/card', {
+      await fetch(`${SERVER_ADDRESS}/card`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -129,7 +130,7 @@ export default class Card extends Component {
     const cardId = {
       cardId: this.props.cardData.id,
     };
-    await fetch('http://localhost:3002/card', {
+    await fetch(`${SERVER_ADDRESS}/card`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
@@ -153,65 +154,101 @@ export default class Card extends Component {
   render() {
     if (this.props.cardData === undefined) {
       return (
-        <div>
-          <input
-            type="text"
-            className="card"
-            placeholder={
-              this.props.cardsLength === 0
-                ? '+ Add a card'
-                : '+ Add another card'
-            }
-            onKeyPress={e => this.handleAddCardClicked(e)}
-          />
-          <input
-            type="button"
-            value={
-              this.props.cardsLength === 0 ? 'Add a card' : 'Add another card'
-            }
-            onClick={e => this.handleAddCardClicked(e)}
-          />
+        <div
+          className="container justify-content-center w-100"
+          style={{ width: '100%' }}
+        >
+          <div
+            className="w-100 justify-content-center"
+            style={{ width: '100%' }}
+          >
+            <div className="container" style={{ height: '100%' }}>
+              <div className="row justify-content-center">
+                <input
+                  type="text"
+                  className="card border-0 bg-light rounded-0 text-dark form-control-static-sm ml-0 mr-0 mt-3 mb-1 pl-2 pr-5 pb-1 pt-1"
+                  placeholder={
+                    this.props.cardsLength === 0
+                      ? '+ Add a card'
+                      : '+ Add another card'
+                  }
+                  onKeyPress={e => this.handleAddCardClicked(e)}
+                />
+                <div className="col-md-6 p-1 ml-5 ">
+                  <input
+                    type="button"
+                    className="btn-sm btn-success border-1 border-white pull-right mr-1 mb-4"
+                    value={
+                      this.props.cardsLength === 0
+                        ? 'Add a card'
+                        : 'Add another card'
+                    }
+                    onClick={e => this.handleAddCardClicked(e)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       );
     }
     return (
-      <div>
-        <Button onClick={this.handleDeleteCard}>X</Button>
-        <Button onClick={this.toggle}>{this.props.cardData.title}</Button>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>
-            <div
-              className="card-title"
-              onClick={e => this.handleCardTitleOrDescriptClicked(e)}
-              role="button"
-              tabIndex="0"
-            >
-              {this.props.cardData.title}
-            </div>
-          </ModalHeader>
-          <ModalBody>
-            Description
-            {this.props.cardData.description === '' ? (
+      <div className="container ml-0" style={{ height: '100%' }}>
+        <div className="row justify-content-center">
+          <Button
+            className="border-0 bg-light rounded-0 text-dark form-control-static-sm pl-2 pr-1 mb-1"
+            style={{ width: '70%' }}
+            onClick={this.toggle}
+          >
+            {this.props.cardData.title}
+          </Button>
+          <Button
+            className="border-0 bg-light rounded-0 text-dark mb-1"
+            onClick={this.handleDeleteCard}
+          >
+            X
+          </Button>
+          <Modal
+            className="justify-content-center"
+            isOpen={this.state.modal}
+            toggle={this.toggle}
+          >
+            <ModalHeader toggle={this.toggle}>
               <div
-                className="card-descript"
+                className="card-title"
                 onClick={e => this.handleCardTitleOrDescriptClicked(e)}
                 role="button"
                 tabIndex="0"
               >
-                Add a more detailed description...
+                {this.props.cardData.title}
               </div>
-            ) : (
-              <div
-                className="card-descript"
-                onClick={e => this.handleCardTitleOrDescriptClicked(e)}
-                role="button"
-                tabIndex="0"
-              >
-                {this.props.cardData.description}
+            </ModalHeader>
+            <ModalBody>
+              <div>
+                <h5 className="text-success">Description</h5>
               </div>
-            )}
-          </ModalBody>
-        </Modal>
+              {this.props.cardData.description === '' ? (
+                <div
+                  className="card-descript"
+                  onClick={e => this.handleCardTitleOrDescriptClicked(e)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  Add a more detailed description...
+                </div>
+              ) : (
+                <div
+                  className="card-descript"
+                  onClick={e => this.handleCardTitleOrDescriptClicked(e)}
+                  role="button"
+                  tabIndex="0"
+                >
+                  {this.props.cardData.description}
+                </div>
+              )}
+            </ModalBody>
+          </Modal>
+        </div>
       </div>
     );
   }
