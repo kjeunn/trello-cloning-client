@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Nav } from 'reactstrap';
+import { SERVER_ADDRESS } from '../config/.env';
 
 function UserNav() {
   async function handleLogOutClicked() {
     if (document.cookie) {
-      await fetch('http://localhost:3002/user/signout', {
+      await fetch(`${SERVER_ADDRESS}/user/signout`, {
         credentials: 'include',
       })
         .then(res => res.json())
@@ -26,7 +27,7 @@ function UserNav() {
               <input
                 className="btn btn-outline-dark my-2 my-sm-0 mr-2"
                 type="button"
-                value="SignOut"
+                value="LogOut"
                 onClick={handleLogOutClicked}
               />
             </Link>
@@ -34,7 +35,7 @@ function UserNav() {
           <li className="nav-item">
             <Link to="/setting">
               <input
-                className="btn btn-outline-dark my-2 my-sm-0 mr-5"
+                className="btn btn btn-dark my-2 my-sm-0 mr-5"
                 type="button"
                 value="Settings"
               />

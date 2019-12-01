@@ -15,14 +15,14 @@ function GuestNav() {
               <input
                 className="btn btn-outline-dark my-2 my-sm-0 mr-2"
                 type="button"
-                value="SignIn"
+                value="LogIn"
               />
             </Link>
           </li>
           <li className="nav-item">
             <Link to="/signup">
               <input
-                className="btn btn-outline-dark my-2 my-sm-0 mr-5"
+                className="btn btn-dark my-2 my-sm-0 mr-5"
                 type="button"
                 value="SignUp"
               />
