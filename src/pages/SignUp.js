@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { SERVER_ADDRESS } from '../config/.env';
 
 export default class SignUp extends Component {
   constructor() {
@@ -16,7 +17,7 @@ export default class SignUp extends Component {
       email: document.getElementsByClassName('email')[0].value,
       password: document.getElementsByClassName('password')[0].value,
     };
-    await fetch('http://localhost:3002/user/signup', {
+    await fetch(`${SERVER_ADDRESS}/user/signup`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
@@ -45,17 +46,43 @@ export default class SignUp extends Component {
       return <Redirect to="/signin" />;
     }
     return (
-      <div>
-        signup
-        <input type="text" className="name" placeholder="Name" />
-        <input type="email" className="email" placeholder="Email" />
-        <input type="password" className="password" placeholder="Password" />
-        <input
-          type="button"
-          value="Sign Up"
-          onClick={this.handleSignUpButtonClicked}
-        />
-        <div>{helperMessage}</div>
+      <div
+        className="container text-center justify-content-md-center mw-70%"
+        style={{ height: '100%' }}
+      >
+        {' '}
+        <div className="row h-100">
+          <div className="col-md-12 my-auto mw-70%">
+            <div className="card shadow-sm p-3 mb-5 bg-white rounded col-md-12 mx-auto ">
+              <div className="card-body">
+                <h2 className="card-title text-muted text-center text-justify pt-20 pb-20">
+                  Sign Up
+                </h2>
+                <div className="mt-5 mb-2.5">
+                  <input type="text" className="name" placeholder="Name" />
+                </div>
+                <div className="mt-3 mb-2">
+                  <input type="email" className="email" placeholder="Email" />
+                </div>
+                <div className="mt-3 mb-2">
+                  <input
+                    type="password"
+                    className="password"
+                    placeholder="Password"
+                  />
+                </div>
+                <small style={{ color: 'red' }}>{helperMessage}</small>
+                <input
+                  className="btn btn-secondary my-2 my-md-0 mr-5 mx-auto"
+                  style={{ width: '40%' }}
+                  type="button"
+                  value="Sign Up"
+                  onClick={this.handleSignUpButtonClicked}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

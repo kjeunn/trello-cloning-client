@@ -10,6 +10,7 @@ import {
 } from 'reactstrap';
 import jwtDecode from 'jwt-decode';
 import Nav from '../components/Nav';
+import { SERVER_ADDRESS } from '../config/.env';
 
 export default class Setting extends Component {
   constructor() {
@@ -29,7 +30,7 @@ export default class Setting extends Component {
   };
 
   getUserInfo = async () => {
-    const userInfo = await fetch('http://localhost:3002/user/setting', {
+    const userInfo = await fetch(`${SERVER_ADDRESS}/user/setting`, {
       credentials: 'include',
     })
       .then(res => res.json())
@@ -78,7 +79,7 @@ export default class Setting extends Component {
         }
       }
       if (isUpdated) {
-        await fetch('http://localhost:3002/user/setting', {
+        await fetch(`${SERVER_ADDRESS}/user/setting`, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ export default class Setting extends Component {
     if (document.cookie) {
       const decodeToken = jwtDecode(document.cookie);
       if (decodeToken.email === this.state.email) {
-        const response = await fetch('http://localhost:3002/user/account', {
+        const response = await fetch(`${SERVER_ADDRESS}/user/account`, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json',

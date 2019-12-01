@@ -8,7 +8,7 @@ export default class Home extends Component {
         <Nav />
         <div style={{ height: '80%' }}>
           <div className="row h-100">
-            <div className="col-sm-12 my-auto">
+            <div className="col-md-12 my-auto">
               <div className="w-auto mx-auto">
                 <h3 className="text-muted text-center pt-20 pb-20">
                   Thanks for using Trello.

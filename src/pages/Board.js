@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Home from '../components/BoardHome';
 import Nav from '../components/Nav';
 import List from '../components/List';
+import { SERVER_ADDRESS } from '../config/.env';
 
 export default class Board extends Component {
   constructor(props) {
@@ -34,7 +35,7 @@ export default class Board extends Component {
         boardId: this.props.match.params.boardId,
         boardTitle: document.getElementsByClassName('board-title')[0].value,
       };
-      await fetch('http://localhost:3002/user/board', {
+      await fetch(`${SERVER_ADDRESS}/user/board`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -62,7 +63,7 @@ export default class Board extends Component {
   };
 
   getBoardTitle = async () => {
-    const board = await fetch(`http://localhost:3002/user/board-list`, {
+    const board = await fetch(`${SERVER_ADDRESS}/user/board-list`, {
       credentials: 'include',
     })
       .then(res => res.json())
@@ -76,7 +77,7 @@ export default class Board extends Component {
 
   handleUpdateBoard = async () => {
     const listsAndCards = await fetch(
-      `http://localhost:3002/user/board/${this.props.match.params.boardId}`,
+      `${SERVER_ADDRESS}/user/board/${this.props.match.params.boardId}`,
       {
         credentials: 'include',
       },
@@ -95,7 +96,7 @@ export default class Board extends Component {
     const boardId = {
       boardId: this.props.match.params.boardId,
     };
-    await fetch('http://localhost:3002/user/board', {
+    await fetch(`${SERVER_ADDRESS}/user/board`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
@@ -114,34 +115,54 @@ export default class Board extends Component {
     return (
       <div>
         <Nav />
-        <Home />
-        <input
-          type="button"
-          value="Delete all"
-          onClick={this.handleDeleteBoard}
-        />
-        <div
-          className="board-title"
-          onClick={this.handleBoardTitleClicked}
-          onKeyPress={this.handleBoardTitleChanged}
-          role="button"
-          tabIndex="0"
-        >
-          {this.state.boardTitle}
-        </div>
-        {this.state.lists.map(listAndCards => (
-          <List
-            key={listAndCards.id}
-            listData={listAndCards}
-            boardId={this.props.match.params.boardId}
-            handleUpdateBoard={this.handleUpdateBoard}
+        <div className="row pl-1 pt-1 pb-1 pr-4 bg-success justify-content-between">
+          <div className="d-inline-block">
+            <Home />
+          </div>
+
+          <input
+            type="button"
+            className="btn btn-sm border-1 border-white bg-success text-white rounded-lg pt-0 pb-0 pl-5 pr-5 mr-5"
+            value="Delete all"
+            onClick={this.handleDeleteBoard}
           />
-        ))}
-        <List
-          listData={undefined}
-          boardId={this.props.match.params.boardId}
-          handleUpdateBoard={this.handleUpdateBoard}
-        />
+        </div>
+        <div className="container p-3" style={{ fontSize: '1.5rem' }}>
+          <div className="d-inline text-dark text-left text-justify">
+            <div
+              className="board-title"
+              onClick={this.handleBoardTitleClicked}
+              onKeyPress={this.handleBoardTitleChanged}
+              role="button"
+              tabIndex="0"
+            >
+              {this.state.boardTitle}
+            </div>
+          </div>
+        </div>
+        <div className="container" style={{ height: '100%' }}>
+          <div style={{ height: '80%' }}>
+            <div className="row h-100">
+              <div className="col-md-6 my-auto p-10">
+                <div className="w-auto mx-auto">
+                  {this.state.lists.map(listAndCards => (
+                    <List
+                      key={listAndCards.id}
+                      listData={listAndCards}
+                      boardId={this.props.match.params.boardId}
+                      handleUpdateBoard={this.handleUpdateBoard}
+                    />
+                  ))}
+                  <List
+                    listData={undefined}
+                    boardId={this.props.match.params.boardId}
+                    handleUpdateBoard={this.handleUpdateBoard}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
