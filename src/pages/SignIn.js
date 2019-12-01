@@ -28,6 +28,7 @@ export default class SignIn extends Component {
     })
       .then(res => res.json())
       .then(res => {
+        console.log(res);
         if (res === 'success') {
           this.setState({
             isSignIn: true,
