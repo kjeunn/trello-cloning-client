@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Input } from 'reactstrap';
 import Card from './Card';
+import { SERVER_ADDRESS } from '../config/.env';
 
 export default class List extends Component {
   handleAddListClicked = async e => {
@@ -10,7 +11,7 @@ export default class List extends Component {
         boardId: this.props.boardId,
         listTitle: elInput.value,
       };
-      await fetch('http://localhost:3002/list', {
+      await fetch(`${SERVER_ADDRESS}/list`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -32,6 +33,7 @@ export default class List extends Component {
     const elInput = document.createElement('input');
     elInput.value = elDiv.innerHTML;
     elInput.className = 'list-title';
+    elInput.size = 15;
     elInput.onkeypress = event => {
       this.handleListTitleKeyPressed(event);
     };
@@ -55,7 +57,7 @@ export default class List extends Component {
         listId: this.props.listData.id,
         listTitle: e.target.value,
       };
-      await fetch('http://localhost:3002/list', {
+      await fetch(`${SERVER_ADDRESS}/list`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
@@ -67,9 +69,6 @@ export default class List extends Component {
         .then(res => res.json())
         .then(res => res)
         .catch(err => console.error(err));
-      // this.setState({
-      //   listTitle: updatedList.listTitle,
-      // });
     }
 
     const elInput = e.target;
@@ -89,7 +88,7 @@ export default class List extends Component {
     const listId = {
       listId: this.props.listData.id,
     };
-    await fetch('http://localhost:3002/list', {
+    await fetch(`${SERVER_ADDRESS}/list`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
@@ -107,46 +106,71 @@ export default class List extends Component {
   render() {
     if (this.props.listData === undefined) {
       return (
-        <div>
-          <input
-            type="text"
-            className="list"
-            placeholder="+ Add anoter list"
-            onKeyPress={e => this.handleAddListClicked(e)}
-          />
-          <input
-            type="button"
-            value="Add List"
-            onClick={e => this.handleAddListClicked(e)}
-          />
+        <div className="row">
+          <div className="d-inline-block p-5 m-3">
+            <input
+              type="text"
+              className="list form-control-static-sm"
+              placeholder="+ Add anoter list"
+              onKeyPress={e => this.handleAddListClicked(e)}
+            />
+            <input
+              type="button"
+              className="btn-sm btn-secondary my-2 my-md-0 mr-5"
+              value="Add List"
+              onClick={e => this.handleAddListClicked(e)}
+            />
+          </div>
         </div>
       );
     }
     return (
-      <div>
-        <Input type="button" value="X" onClick={this.handleDeleteClicked} />
-        <div
-          className="list-title"
-          onClick={e => this.handleListTitleClicked(e)}
-          role="button"
-          tabIndex="0"
-        >
-          {this.props.listData.title}
+      <div className="container" style={{ height: '100%' }}>
+        <div className="row justify-content-between ">
+          <div className="d-inline-block" style={{ height: '80%' }}>
+            <div
+              className="d-inline-block border border-0 bg-success rounded-lg"
+              style={{ width: '35vh' }}
+            >
+              <div className="input-group justify-content-between">
+                <span className="p-4">
+                  <div
+                    className="list-title"
+                    onClick={e => this.handleListTitleClicked(e)}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    {this.props.listData.title}
+                  </div>
+                </span>
+                <span className="input-group-btn p-3">
+                  <Input
+                    type="button"
+                    className="bg-success text-white border-0"
+                    value="X"
+                    onClick={this.handleDeleteClicked}
+                  />
+                </span>
+              </div>
+              <div className="m-0">
+                {this.props.listData.cardLists.map(card => (
+                  <Card
+                    key={card.id}
+                    cardData={card}
+                    listId={this.props.listData.id}
+                    handleUpdateBoard={this.props.handleUpdateBoard}
+                  />
+                ))}
+                <Card
+                  cardData={undefined}
+                  cardsLength={this.props.listData.cardLists.length}
+                  listId={this.props.listData.id}
+                  handleUpdateBoard={this.props.handleUpdateBoard}
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        {this.props.listData.cardLists.map(card => (
-          <Card
-            key={card.id}
-            cardData={card}
-            listId={this.props.listData.id}
-            handleUpdateBoard={this.props.handleUpdateBoard}
-          />
-        ))}
-        <Card
-          cardData={undefined}
-          cardsLength={this.props.listData.cardLists.length}
-          listId={this.props.listData.id}
-          handleUpdateBoard={this.props.handleUpdateBoard}
-        />
       </div>
     );
   }
