@@ -107,7 +107,7 @@ export default class List extends Component {
     if (this.props.listData === undefined) {
       return (
         <div className="row">
-          <div className="d-inline-block p-5 m-3">
+          <div className="d-inline-block p-4 m-2 border border-1 bg-light rounded-lg">
             <input
               type="text"
               className="list form-control-static-sm"
@@ -116,7 +116,7 @@ export default class List extends Component {
             />
             <input
               type="button"
-              className="btn-sm btn-secondary my-2 my-md-0 mr-5"
+              className="btn-sm btn-secondary my-2 my-md-0 pull-right"
               value="Add List"
               onClick={e => this.handleAddListClicked(e)}
             />

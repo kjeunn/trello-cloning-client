@@ -174,10 +174,13 @@ export default class Card extends Component {
                   }
                   onKeyPress={e => this.handleAddCardClicked(e)}
                 />
-                <div className="col-md-6 p-1 ml-5 ">
+                <div
+                  className="col-md-6 w-100 p-1 ml-5 pull-right"
+                  style={{ width: '100%' }}
+                >
                   <input
                     type="button"
-                    className="btn-sm btn-success border-1 border-white pull-right mr-1 mb-4"
+                    className="btn-sm btn-success border-1 border-white pull-right mr-1 mb-4 pull-right"
                     value={
                       this.props.cardsLength === 0
                         ? 'Add a card'
