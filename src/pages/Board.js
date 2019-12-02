@@ -115,11 +115,10 @@ export default class Board extends Component {
     return (
       <div>
         <Nav />
-        <div className="row pl-1 pt-1 pb-1 pr-4 bg-success justify-content-between">
+        <div className="row pl-1 pt-1 pb-1 pr-2 bg-success justify-content-between">
           <div className="d-inline-block">
             <Home />
           </div>
-
           <input
             type="button"
             className="btn btn-sm border-1 border-white bg-success text-white rounded-lg pt-0 pb-0 pl-5 pr-5 mr-5"
@@ -127,39 +126,48 @@ export default class Board extends Component {
             onClick={this.handleDeleteBoard}
           />
         </div>
-        <div className="container p-3" style={{ fontSize: '1.5rem' }}>
-          <div className="d-inline text-dark text-left text-justify">
-            <div
-              className="board-title"
-              onClick={this.handleBoardTitleClicked}
-              onKeyPress={this.handleBoardTitleChanged}
-              role="button"
-              tabIndex="0"
-            >
-              {this.state.boardTitle}
+        <div className="row w-100">
+          <div className="container p-3" style={{ fontSize: '1.5rem' }}>
+            <div className="d-inline text-dark text-left text-justify">
+              <div
+                className="board-title"
+                onClick={this.handleBoardTitleClicked}
+                onKeyPress={this.handleBoardTitleChanged}
+                role="button"
+                tabIndex="0"
+              >
+                {this.state.boardTitle}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="container" style={{ height: '100%' }}>
-          <div style={{ height: '80%' }}>
-            <div className="row h-100">
-              <div className="col-md-6 my-auto p-10">
-                <div className="w-auto mx-auto">
-                  {this.state.lists.map(listAndCards => (
-                    <List
-                      key={listAndCards.id}
-                      listData={listAndCards}
-                      boardId={this.props.match.params.boardId}
-                      handleUpdateBoard={this.handleUpdateBoard}
-                    />
-                  ))}
+          <div
+            className="container-fluid p-0 m-0"
+            style={{ height: '100vh', overflowX: 'auto' }}
+          >
+            <div className="container d-flex p-0">
+              {this.state.lists.map(listAndCards => {
+                return (
+                  <span className="row p-3">
+                    <span className="col-md-6">
+                      <List
+                        key={listAndCards.id}
+                        listData={listAndCards}
+                        boardId={this.props.match.params.boardId}
+                        handleUpdateBoard={this.handleUpdateBoard}
+                      />
+                    </span>
+                  </span>
+                );
+              })}
+              <span className="row pl-3 pr-3 pt-2 pb-2">
+                <span className="col-md-6 pull-right">
                   <List
                     listData={undefined}
                     boardId={this.props.match.params.boardId}
                     handleUpdateBoard={this.handleUpdateBoard}
                   />
-                </div>
-              </div>
+                </span>
+              </span>
             </div>
           </div>
         </div>
