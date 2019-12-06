@@ -10,6 +10,7 @@ import {
 } from 'reactstrap';
 import jwtDecode from 'jwt-decode';
 import Nav from '../components/Nav';
+import Home from '../components/BoardHome';
 import { SERVER_ADDRESS } from '../config/.env';
 
 export default class Setting extends Component {
@@ -67,7 +68,12 @@ export default class Setting extends Component {
       }
       if (document.cookie) {
         const decodeToken = jwtDecode(document.cookie);
-        if (
+        if (newPassword === '' || confirmNewPassword === '') {
+          isUpdated = false;
+          this.setState({
+            setPasswordHelperMessage: '변경할 비밀번호를 입력해주세요.',
+          });
+        } else if (
           decodeToken.email === this.state.email &&
           newPassword === confirmNewPassword
         ) {
@@ -154,9 +160,25 @@ export default class Setting extends Component {
     return (
       <div>
         <Nav />
-        <div>{this.state.email}</div>
-        <div>{this.state.name}</div>
-        {/* <div>이름 변경</div>
+        <div className="row pl-1 pt-1 pb-1 pr-2 bg-success justify-content-between">
+          <div className="d-inline-block">
+            <Home />
+          </div>
+        </div>
+        <div className="container" style={{ height: '100vh' }}>
+          <div className="row">
+            <div className="col-md-4" />
+            <div className="col-md-4" style={{ height: '80vh' }}>
+              <div className="m-5 p-3 border border-0 bg-dark rounded-pill">
+                <div className="p-2 text-center text-white text-align-center justify-content-center">
+                  <h5>{this.state.email}</h5>
+                </div>{' '}
+                <div className="p-2 text-center text-white text-align-center justify-content-center">
+                  <h5>{this.state.name}</h5>
+                </div>
+              </div>
+
+              {/* <div>이름 변경</div>
         <Input
           type="text"
           className="name"
@@ -164,40 +186,57 @@ export default class Setting extends Component {
           onKeyPress={e => this.handleSettingNameOrPassword(e)}
         />
         <Button onClick={e => this.handleSettingNameOrPassword(e)}>Save</Button> */}
-        <div>비밀번호 변경</div>
-        <Input
-          type="password"
-          className="new-password"
-          placeholder="New password"
-        />
-        <Input
-          type="password"
-          className="confirm-new-password"
-          placeholder="Again new password"
-        />
-        <div>{setPasswordHelperMessage}</div>
-        <Button onClick={e => this.handleSettingNameOrPassword(e)}>Save</Button>
-        <div>
-          <Button onClick={this.toggle}>Delete account</Button>
-          <Modal isOpen={this.state.modal} toggle={this.toggle}>
-            <ModalHeader toggle={this.toggle}>회원탈퇴</ModalHeader>
-            <ModalBody>
+              <div className="pt-3 pb-2 pl-2 text-align-center">
+                <h6>비밀번호 변경</h6>
+              </div>
               <Input
                 type="password"
-                className="check-password"
-                placeholder="Check password"
+                className="new-password"
+                placeholder="New password"
               />
-            </ModalBody>
-            <div>{helperMessage}</div>
-            <ModalFooter>
-              <Button color="secondary" onClick={this.toggle}>
-                Cancel
+              <div className="p-1" />
+              <Input
+                type="password"
+                className="confirm-new-password"
+                placeholder="Again new password"
+              />
+              <div className="p-3 text-align-center text-center justify-content-center">
+                <small style={{ color: 'red' }}>
+                  {setPasswordHelperMessage}
+                </small>
+              </div>
+              <Button
+                className="btn-block border-0 text-white bg-dark rounded-lg mb-3"
+                onClick={e => this.handleSettingNameOrPassword(e)}
+              >
+                Save
               </Button>
-              <Button color="primary" onClick={this.handleDeleteAccount}>
-                Confirm
-              </Button>
-            </ModalFooter>
-          </Modal>
+              <div>
+                <Button className="btn-block border-0" onClick={this.toggle}>
+                  Delete account
+                </Button>
+                <Modal isOpen={this.state.modal} toggle={this.toggle}>
+                  <ModalHeader toggle={this.toggle}>회원탈퇴</ModalHeader>
+                  <ModalBody>
+                    <Input
+                      type="password"
+                      className="check-password"
+                      placeholder="Check password"
+                    />
+                  </ModalBody>
+                  <div>{helperMessage}</div>
+                  <ModalFooter>
+                    <Button color="secondary" onClick={this.toggle}>
+                      Cancel
+                    </Button>
+                    <Button color="primary" onClick={this.handleDeleteAccount}>
+                      Confirm
+                    </Button>
+                  </ModalFooter>
+                </Modal>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
