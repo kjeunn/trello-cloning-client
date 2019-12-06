@@ -25,12 +25,14 @@ class BoardList extends Component {
   };
 
   handleCreateBoardClicked = async e => {
-    if (e.charCode === 13 || e.target.value === 'Create Board') {
-      const elInput = document.getElementsByClassName('board')[0];
+    const elInput = document.getElementsByClassName('board')[0];
+    if (
+      (e.charCode === 13 || e.target.value === 'Create Board') &&
+      elInput.value !== ''
+    ) {
       const createdBoard = {
         boardTitle: elInput.value,
       };
-      console.log(elInput.value);
       await fetch(`${SERVER_ADDRESS}/user/board`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
