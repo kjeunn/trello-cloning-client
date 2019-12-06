@@ -12,9 +12,10 @@ export default class Card extends Component {
 
   handleAddCardClicked = async e => {
     if (
-      e.charCode === 13 ||
-      e.target.value === 'Add a card' ||
-      e.target.value === 'Add another card'
+      (e.charCode === 13 && e.target.value !== '') ||
+      ((e.target.value === 'Add a card' ||
+        e.target.value === 'Add another card') &&
+        e.target.previousSibling.value !== '')
     ) {
       const createdCard = {
         listId: this.props.listId,
@@ -25,6 +26,14 @@ export default class Card extends Component {
             : e.target.value,
         cardDescript: '',
       };
+      if (
+        e.target.value === 'Add a card' ||
+        e.target.value === 'Add another card'
+      ) {
+        e.target.previousSibling.value = '';
+      } else {
+        e.target.value = '';
+      }
       await fetch(`${SERVER_ADDRESS}/card`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -37,6 +46,7 @@ export default class Card extends Component {
         .then(res => res.json())
         .then(res => res)
         .catch(err => console.error(err));
+
       this.props.handleUpdateBoard();
     }
   };
@@ -154,42 +164,33 @@ export default class Card extends Component {
   render() {
     if (this.props.cardData === undefined) {
       return (
-        <div
-          className="container justify-content-center w-100"
-          style={{ width: '100%' }}
-        >
+        <div className="container p-0" style={{ height: '100%' }}>
           <div
-            className="w-100 justify-content-center"
-            style={{ width: '100%' }}
+            className="row justify-content-center w-100 m-0 p-1"
+            style={{ height: '100%' }}
           >
-            <div className="container" style={{ height: '100%' }}>
-              <div className="row justify-content-center">
-                <input
-                  type="text"
-                  className="card border-0 bg-light rounded-0 text-dark form-control-static-sm ml-0 mr-0 mt-3 mb-1 pl-2 pr-5 pb-1 pt-1"
-                  placeholder={
-                    this.props.cardsLength === 0
-                      ? '+ Add a card'
-                      : '+ Add another card'
-                  }
-                  onKeyPress={e => this.handleAddCardClicked(e)}
-                />
-                <div
-                  className="col-md-6 w-100 p-1 ml-5 pull-right"
-                  style={{ width: '100%' }}
-                >
-                  <input
-                    type="button"
-                    className="btn-sm btn-success border-1 border-white pull-right mr-1 mb-4 pull-right"
-                    value={
-                      this.props.cardsLength === 0
-                        ? 'Add a card'
-                        : 'Add another card'
-                    }
-                    onClick={e => this.handleAddCardClicked(e)}
-                  />
-                </div>
-              </div>
+            <div className="d-inline-block">
+              <input
+                type="text"
+                className="card p-0 border-0 bg-light rounded-0 text-dark ml-0 mr-0 mt-3 mb-1 pb-1 pt-1"
+                style={{ width: '29vh' }}
+                placeholder={
+                  this.props.cardsLength === 0
+                    ? '+ Add a card'
+                    : '+ Add another card'
+                }
+                onKeyPress={e => this.handleAddCardClicked(e)}
+              />
+              <input
+                type="button"
+                className="btn-sm btn-success border-1 border-white pull-right mb-3"
+                value={
+                  this.props.cardsLength === 0
+                    ? 'Add a card'
+                    : 'Add another card'
+                }
+                onClick={e => this.handleAddCardClicked(e)}
+              />
             </div>
           </div>
         </div>

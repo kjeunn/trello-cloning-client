@@ -5,7 +5,10 @@ import { SERVER_ADDRESS } from '../config/.env';
 
 export default class List extends Component {
   handleAddListClicked = async e => {
-    if (e.charCode === 13 || e.target.value === 'Add List') {
+    if (
+      (e.charCode === 13 && e.target.value !== '') ||
+      (e.target.value === 'Add List' && e.target.previousSibling.value !== '')
+    ) {
       const elInput = document.getElementsByClassName('list')[0];
       const createdList = {
         boardId: this.props.boardId,
