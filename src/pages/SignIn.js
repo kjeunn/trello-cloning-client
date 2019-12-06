@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { withCookies } from 'react-cookie';
 import { SERVER_ADDRESS } from '../config/.env';
 import Nav from '../components/Nav';
 
-export default class SignIn extends Component {
+class SignIn extends Component {
   constructor() {
     super();
     this.state = {
@@ -22,14 +23,16 @@ export default class SignIn extends Component {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       method: 'POST',
       body: JSON.stringify(userInfo),
-      credentials: 'include',
     })
       .then(res => res.json())
       .then(res => {
         console.log(res);
-        if (res === 'success') {
+        if (res.status === 'success') {
+          const { cookies } = this.props;
+          cookies.set('trello', res.trello);
           this.setState({
             isSignIn: true,
           });
@@ -102,3 +105,5 @@ export default class SignIn extends Component {
     );
   }
 }
+
+export default withCookies(SignIn);

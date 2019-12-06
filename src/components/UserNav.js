@@ -6,6 +6,7 @@ import { SERVER_ADDRESS } from '../config/.env';
 function UserNav() {
   async function handleLogOutClicked() {
     if (document.cookie) {
+      document.cookie = 'trello=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       await fetch(`${SERVER_ADDRESS}/user/signout`, {
         credentials: 'include',
       })
