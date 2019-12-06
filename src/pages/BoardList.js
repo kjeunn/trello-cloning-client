@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withCookies } from 'react-cookie';
 import Nav from '../components/Nav';
 import { SERVER_ADDRESS } from '../config/.env';
 
-export default class BoardList extends Component {
+class BoardList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,17 +30,19 @@ export default class BoardList extends Component {
       const createdBoard = {
         boardTitle: elInput.value,
       };
+      console.log(elInput.value);
       await fetch(`${SERVER_ADDRESS}/user/board`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-Type': 'application/json',
         },
-        method: 'POST',
-        body: JSON.stringify(createdBoard),
         credentials: 'include',
+        method: 'POST',
+        // mode: 'cors',
+        body: JSON.stringify(createdBoard),
       })
         .then(res => res.json())
-        .then(res => res)
+        .then(res => console.log(res))
         .catch(err => console.error(err));
 
       const boardList = await fetch(`${SERVER_ADDRESS}/user/board-list`, {
@@ -92,7 +95,7 @@ export default class BoardList extends Component {
                   <div className="d-inline-block p-3 m-3">
                     <input
                       type="text"
-                      className="board form-control-static-sm "
+                      className="board"
                       placeholder="+ Create new board"
                       onKeyPress={e => this.handleCreateBoardClicked(e)}
                     />
@@ -115,3 +118,5 @@ export default class BoardList extends Component {
     );
   }
 }
+
+export default withCookies(BoardList);
