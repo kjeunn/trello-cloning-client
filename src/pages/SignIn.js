@@ -29,7 +29,6 @@ class SignIn extends Component {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res);
         if (res.status === 'success') {
           const { cookies } = this.props;
           cookies.set('trello', res.trello);
