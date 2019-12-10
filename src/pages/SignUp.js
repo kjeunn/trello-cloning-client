@@ -13,11 +13,18 @@ export default class SignUp extends Component {
   }
 
   handleSignUpButtonClicked = async () => {
+    // eslint-disable-next-line no-useless-escape
+    const checkEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const userInfo = {
       name: document.getElementsByClassName('name')[0].value,
       email: document.getElementsByClassName('email')[0].value,
       password: document.getElementsByClassName('password')[0].value,
     };
+    if (!checkEmail.test(document.getElementsByClassName('email')[0].value)) {
+      this.setState({
+        helperMessage: '이메일 주소를 입력해주세요.',
+      });
+    }
     await fetch(`${SERVER_ADDRESS}/user/signup`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -32,9 +39,13 @@ export default class SignUp extends Component {
           this.setState({
             isSignUp: true,
           });
-        } else if (res === 'failure') {
+        } else if (res === 'existed user') {
           this.setState({
             helperMessage: '이미 존재하는 이메일입니다.',
+          });
+        } else if (res === 'failure') {
+          this.setState({
+            helperMessage: '이메일 주소를 입력해주세요.',
           });
         }
       })
